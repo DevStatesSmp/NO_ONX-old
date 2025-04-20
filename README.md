@@ -54,7 +54,7 @@ Use git clone:
 ```bash
 git clone https://github.com/DevStatesSmp/NO_ONX
 ```
-
+Or if you prefer to download a specific version manually, visit the [Releases page](https://github.com/DevStatesSmp/NO_ONX/releases) and download the ZIP or tarball of the version you want.
 ### Example
 Some example command you can use like:<br>
 
