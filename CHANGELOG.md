@@ -1,3 +1,6 @@
+# v0.2.4 Beta
+No detail
+
 # v0.1.2 Beta
 - NO_ONX: Small update
 - NO_ONX::modify : Added compare and check permission command, backup file and some command
