@@ -48,7 +48,15 @@ To view version and available command:
 python noonx.py
 ```
 
-Some example command you can use like:
+## Install NO_ONX
+(Make sure that you have git)<br>
+Use git clone:
+```bash
+git clone https://github.com/DevStatesSmp/NO_ONX
+```
+
+### Example
+Some example command you can use like:<br>
 
 python readfile.py - Read file content<br>
 python detective.py - Monitor and detect suspecious activity on the system
