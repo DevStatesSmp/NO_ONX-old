@@ -45,12 +45,6 @@ and C++: (If using Linux)
 sudo apt install build-essential libssl-dev
 ```
 
-## How to use
-To view version and available command:
-
-```bash
-python noonx.py
-```
 
 ## Install NO_ONX
 (Make sure that you have git)<br>
@@ -61,21 +55,12 @@ git clone https://github.com/DevStatesSmp/NO_ONX
 (Note: if you're using Window, you should remove the rest of the file and only keep the "window-version" folder.)<br>
 
 Or if you prefer to download a specific version manually, visit the [Releases page](https://github.com/DevStatesSmp/NO_ONX/releases) and download the ZIP or tarball of the version you want.
-### Example
-Some example command you can use like:<br>
+## How to use
 
-python readfile.py - Read file content<br>
-python detective.py - Monitor and detect suspecious activity on the system
+To view version and available command:
 
-Example:
 ```bash
-┌──(USER㉿user)-[~/Desktop/no_onx]
-└─$ python readfile.py                               
-Ex: /home/-USER_NAME-/Desktop/example.txt
-Please enter path of the file: 
-/home/USER/Desktop/text.txt
-Line 1: hello world!
-Line 2: i love u :heart:
+python noonx.py
 ```
 
 More commands and feature will be added in future, stay tuned!
