@@ -6,9 +6,9 @@
 # NO_ONX
 NO_ONX is a lightweight tool but useful to analysis, investigattion, security monitoring for Linux System
 ## Requirement
-- OS: Linux (Ubuntu, Debian, Arch Linux)
+- OS: Linux (Ubuntu, Debian, Arch Linux), Window 10+ (can be lower than Window 10)
 - Python: 3.1x
-- C++17 and C++ Compiler (`g++`)
+- C++17 and C++ Compiler (`g++`) (Note: If you using Window, you don't have to install C++)
 
 ## Installation
 ### Installing Python and C++ (Skip this if you have)<br>
@@ -24,11 +24,15 @@ sudo pacman -Sy
 sudo pacman -S python python-pip gcc base-devel openssl
 ```
 
+For Window, you must have to access Python website to download their new release (Ex: 3.14)
+
 ### Install required libary
 (Note: If you're using Kali Linux, you can skip this step)<br>
 For python:
 ```bash
-pip install -r python_requirements.txt
+pip install -r python_requirements.txt // For Linux
+
+pip install -r requirement.txt // for window
 ```
 
 If using Arch:
