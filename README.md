@@ -30,9 +30,9 @@ For Window, you must have to access Python website to download their new release
 (Note: If you're using Kali Linux, you can skip this step)<br>
 For python:
 ```bash
-pip install -r python_requirements.txt // For Linux
+pip install -r python_requirements.txt # For Linux
 
-pip install -r requirement.txt // for window
+pip install -r requirement.txt # for window
 ```
 
 If using Arch:
@@ -40,7 +40,7 @@ If using Arch:
 sudo pacman -S python-psutil python-pyfiglet python-distro
 ```
 
-and C++:
+and C++: (If using Linux)
 ```bash
 sudo apt install build-essential libssl-dev
 ```
@@ -58,6 +58,8 @@ Use git clone:
 ```bash
 git clone https://github.com/DevStatesSmp/NO_ONX
 ```
+(Note: if you're using Window, you should remove the rest of the file and only keep the "window-version" folder.)<br>
+
 Or if you prefer to download a specific version manually, visit the [Releases page](https://github.com/DevStatesSmp/NO_ONX/releases) and download the ZIP or tarball of the version you want.
 ### Example
 Some example command you can use like:<br>
