@@ -21,14 +21,23 @@ def validate_file_path(file_path):
 
     return True
 
-# Read file
-def read_file(file_path):
+# Read text file
+def read_text_file(file_path):
     try:
         with open(file_path, 'r', encoding='utf-8', errors='replace') as f:
             for line_number, line in enumerate(f, start=1):
                 print(f"Line {line_number}: {line.rstrip()}")
     except Exception as e:
         print(f"Error: Could not open the file {file_path}\n{e}", file=sys.stderr)
+
+# Read binary file (optional)
+def read_binary_file(file_path):
+    try:
+        with open(file_path, 'rb') as f:
+            content = f.read(16)  # Read first 16 bytes as a sample
+            print(f"First 16 bytes of the file {file_path}: {content.hex()}")
+    except Exception as e:
+        print(f"Error: Could not open the binary file {file_path}\n{e}", file=sys.stderr)
 
 # Main function
 def main():
@@ -41,7 +50,13 @@ def main():
     if not validate_file_path(file_path):
         return
 
-    read_file(file_path)
+    # Determine if it's a binary or text file
+    if file_path.lower().endswith(('.txt', '.md', '.log', '.csv')):  # Example of common text file extensions
+        read_text_file(file_path)
+    else:
+        print("The file is treated as binary.")
+        read_binary_file(file_path)
 
 if __name__ == "__main__":
     main()
+

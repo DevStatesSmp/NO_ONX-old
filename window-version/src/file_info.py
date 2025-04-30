@@ -1,12 +1,14 @@
-from file_info_module import info
+from file_info_module import info, check_permission
 
 def info_commands():
     print("📌 Available operations in file_info.py:\n")
     print("🔍 file_info(path)")
+    print("🔍 hidden_file_info(path) [STILL DEVELOP]")
     print("🔑 file_hash(path, algo='sha256')")
     print("🔗 symlink_info(path)")
     print("📁 dir_info(path)")
     print("📦 extended_info(path)\n")
+    print("🔒 check_permission(path)\n")
 
 def main():
     print("Available operations (Not number, enter name)")
@@ -39,6 +41,10 @@ def main():
         elif operation == "extended_info":
             path = input("📦 Enter path: ").strip()
             info.extended_info(path)
+
+        elif operation == "check_permission":
+            path = input("🔒 Enter path to check permissions: ").strip()
+            check_permission.analyze(path)
 
         else:
             print("❓ Unknown operation. Please choose from available commands.\n")

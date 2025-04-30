@@ -1,4 +1,5 @@
 import os
+import sys
 import hashlib
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -29,9 +30,9 @@ def get_file_hash(path: str, hash_type="sha256") -> str:
 
     return hash_func.hexdigest()
 
-def scan_file(path: Path):
+def scan_file(path: Path, hash_type="sha256"):
     if path.is_file():
-        file_hash = get_file_hash(str(path))
+        file_hash = get_file_hash(str(path), hash_type)
         if not file_hash:
             return
 
@@ -46,11 +47,11 @@ def scan_file(path: Path):
 
     elif path.is_dir():
         for child in path.iterdir():
-            scan_file(child)
+            scan_file(child, hash_type)
     else:
         print(f"Invalid path: {path}")
 
-def scan_directory(root_path: str):
+def scan_directory(root_path: str, hash_type="sha256"):
     path = Path(root_path)
     if not path.exists():
         print("Path does not exist.")
@@ -59,16 +60,17 @@ def scan_directory(root_path: str):
     tasks = []
     with ThreadPoolExecutor() as executor:
         for entry in path.iterdir():
-            tasks.append(executor.submit(scan_file, entry))
+            tasks.append(executor.submit(scan_file, entry, hash_type))
 
         for task in as_completed(tasks):
             pass  # Wait for all tasks
 
-def main():
-    directory_to_scan = input("Enter directory to scan: ").strip()
-    print("\n--- Starting scan ---\n")
-    scan_directory(directory_to_scan)
+def reset_results():
+    with safe_lock, infected_lock:
+        safe_files.clear()
+        infected_files.clear()
 
+def print_results():
     print("\n--- Scan Results ---")
 
     print("\n❌ Infected files:")
@@ -86,6 +88,19 @@ def main():
             print(f"  -> {f}")
 
     print("\n--- Scan complete ---")
+
+def main():
+    if len(sys.argv) >= 2:
+        directory_to_scan = sys.argv[1]
+    else:
+        directory_to_scan = input("Enter directory to scan: ").strip()
+
+    hash_type = sys.argv[2] if len(sys.argv) >= 3 else "sha256"
+
+    print("\n--- Starting scan ---\n")
+    reset_results()
+    scan_directory(directory_to_scan, hash_type)
+    print_results()
 
 if __name__ == "__main__":
     main()

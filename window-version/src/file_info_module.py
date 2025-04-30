@@ -1,11 +1,10 @@
-# THIS IS NOT A MODULE, INSTEAD USE FILE_INFO_MODULE.PY, YOU SHOULD USE FILE_INFO.PY
-
 import os
 import stat
 import time
 import hashlib
-import platform
 import getpass
+import argparse
+import platform
 
 # Optional: only import win32security if on Windows and available
 try:
@@ -14,6 +13,7 @@ try:
 except ImportError:
     win32security = None
 
+# Define info class with static methods for file operations
 class info:
     @staticmethod
     def get_owner(path):
@@ -25,12 +25,14 @@ class info:
                 return f"{domain}\\{name}"
             except Exception:
                 return getpass.getuser()
-        else:
+        elif platform.system() != "Windows":  # Check if not on Windows
             try:
-                import pwd
+                import pwd  # Import pwd only if not on Windows
                 return pwd.getpwuid(os.stat(path).st_uid).pw_name
             except Exception:
                 return getpass.getuser()
+        else:
+            return getpass.getuser()  # Default to current user on other systems
 
     @staticmethod
     def file_info(path):
@@ -107,3 +109,64 @@ class info:
             info.file_hash(path)
         if os.path.islink(path):
             info.symlink_info(path)
+
+
+class check_permission:
+    """Class to analyze and print file/directory permissions along with special flags."""
+
+    @staticmethod
+    def analyze(path):
+        """Analyzes and prints file/directory permissions along with special flags."""
+        try:
+            # Check if path exists
+            if not os.path.exists(path):
+                print(f"[-] Path does not exist: {path}")
+                return
+
+            # For Windows, use win32security to get the permissions
+            if platform.system() == "Windows" and win32security:
+                try:
+                    # Get the file security descriptor
+                    sd = win32security.GetFileSecurity(path, win32security.DACL_SECURITY_INFORMATION)
+                    # Get the DACL (Discretionary Access Control List)
+                    dacl = sd.GetSecurityDescriptorDacl()
+
+                    # Get file owner SID
+                    owner_sid = sd.GetSecurityDescriptorOwner()
+                    owner_name, domain, _ = win32security.LookupAccountSid(None, owner_sid)
+
+                    print(f"[+] {path} (Windows)")
+                    print(f"    Owner : {domain}\\{owner_name}")
+                    print(f"    Permissions:")
+
+                    # Display ACE (Access Control Entries)
+                    for i in range(dacl.GetAceCount()):
+                        ace = dacl.GetAce(i)
+                        print(f"      ACE {i}: {ace}")
+
+                except Exception as e:
+                    print(f"[-] Error reading security descriptor: {e}")
+
+            # Integrate with file info methods (for any other information)
+            info.file_info(path)
+
+        except FileNotFoundError:
+            print(f"[-] File not found: {path}")
+        except PermissionError:
+            print(f"[-] Permission denied: {path}")
+        except Exception as e:
+            print(f"[-] Error analyzing {path}: {e}")
+
+
+def main():
+    """Main function to handle argument parsing and execute the permission check."""
+    parser = argparse.ArgumentParser(description="Analyze file/folder permissions and retrieve additional information")
+    parser.add_argument("target", nargs='+', help="Target file(s) or directory(ies) to check permissions")
+    args = parser.parse_args()
+
+    for path in args.target:
+        check_permission.analyze(path)
+
+if __name__ == "__main__":
+    main()
+
