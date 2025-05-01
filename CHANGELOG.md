@@ -12,3 +12,6 @@
 # v0.0.5 Beta
 - NO_ONX: Added readfile, detective, and some first commands
 - NO_ONX::modify : Added  file info, modification
+
+# v0.0.2 Alpha (Trial version, not available)
+- Add readfile and detective command
