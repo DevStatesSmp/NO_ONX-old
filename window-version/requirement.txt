@@ -1,3 +1,4 @@
 pyfiglet
 psutil
 pywin32
+tabulet

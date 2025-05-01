@@ -1,3 +1,5 @@
+# THIS IS MODULE, DO NOT RUN THIS FILE DIRECTLY
+
 import os
 import stat
 import time
@@ -5,6 +7,9 @@ import hashlib
 import getpass
 import argparse
 import platform
+import logging
+from datetime import datetime
+import mimetypes
 
 # Optional: only import win32security if on Windows and available
 try:
@@ -12,6 +17,9 @@ try:
         import win32security
 except ImportError:
     win32security = None
+
+# set up logging
+logging.basicConfig(filename='hidden_file_info.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
 # Define info class with static methods for file operations
 class info:
@@ -157,12 +165,80 @@ class check_permission:
         except Exception as e:
             print(f"[-] Error analyzing {path}: {e}")
 
+# Hidden file info
+class hidden_file_info:
+    def __init__(self, path):
+        self.path = path
+        self.hidden_count = 0
+    
+    def is_hidden(self, filepath):
+        """Check if the file is hidden based on its name or permissions."""
+        name = os.path.basename(filepath)
+        if name.startswith('.'):
+            return True
+        return not os.access(filepath, os.R_OK)
+
+    def file_info(self, filepath):
+        """Collect file information like size, hash, and modification time."""
+        try:
+            statinfo = os.lstat(filepath)
+            if stat.S_ISDIR(statinfo.st_mode): 
+                return {"error": f"'{filepath}' is a directory, not a file."}
+
+            mime, _ = mimetypes.guess_type(filepath)
+            with open(filepath, 'rb') as f:
+                data = f.read(4096)
+                hash_val = hashlib.sha256(data).hexdigest()
+            
+            file_info_dict = {
+                "size": statinfo.st_size,
+                "type": mime,
+                "uid": statinfo.st_uid,
+                "gid": statinfo.st_gid,
+                "mode": stat.filemode(statinfo.st_mode),
+                "hash": hash_val,
+                "mtime": datetime.fromtimestamp(statinfo.st_mtime).strftime('%Y-%m-%d %H:%M:%S'),
+                "atime": datetime.fromtimestamp(statinfo.st_atime).strftime('%Y-%m-%d %H:%M:%S'),
+                "ctime": datetime.fromtimestamp(statinfo.st_ctime).strftime('%Y-%m-%d %H:%M:%S')
+            }
+            return file_info_dict
+        except Exception as e:
+            return {"error": f"An error occurred: {str(e)}"}
+
+    def scan_hidden(self):
+        """Scan for hidden files and directories."""
+        for root, dirs, files in os.walk(self.path):
+            for name in files + dirs:
+                fullpath = os.path.join(root, name)
+                if self.is_hidden(fullpath):
+                    self.hidden_count += 1
+                    info = self.file_info(fullpath)
+                    print(f"[Hidden] {fullpath}")
+                    for k, v in info.items():
+                        print(f"    {k}: {v}")
+                    print("")
+                    logging.info(f"[Hidden] {fullpath}")
+                    for k, v in info.items():
+                        logging.info(f"    {k}: {v}")
+                    logging.info("")  # Add a blank line for readability
+
+        if self.hidden_count == 0:
+            print("No hidden files or directories found.")
+        else:
+            print(f"Total hidden files and directories found: {self.hidden_count}")
+
 
 def main():
     """Main function to handle argument parsing and execute the permission check."""
     parser = argparse.ArgumentParser(description="Analyze file/folder permissions and retrieve additional information")
     parser.add_argument("target", nargs='+', help="Target file(s) or directory(ies) to check permissions")
+    parser.add_argument("--scan-hidden", action="store_true", help="Scan for hidden files and directories")
     args = parser.parse_args()
+
+    if args.scan_hidden:
+        for path in args.target:
+            hidden_scanner = hidden_file_info(path)
+            hidden_scanner.scan_hidden()
 
     for path in args.target:
         check_permission.analyze(path)
