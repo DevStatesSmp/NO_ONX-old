@@ -1,5 +1,5 @@
 # v0.2.4 Beta (No date release)
-No detail
+- NO_ONX for Window: Finally added all command from ::modify for Window 
 
 # v0.1.2 Beta
 - NO_ONX: Small update
