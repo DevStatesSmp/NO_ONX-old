@@ -1,5 +1,7 @@
 # v0.2.4 Beta (No date release)
-- NO_ONX for Window: Finally added all command from ::modify for Window 
+- NO_ONX: No information
+- NO_ONX::modify : No information
+- NO_ONX for Window: Finally added all command from ::modify for Window (Will release on 5/1/2025)
 
 # v0.1.2 Beta
 - NO_ONX: Small update
