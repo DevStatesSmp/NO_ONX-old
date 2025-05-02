@@ -1,5 +1,5 @@
 # v0.2.4 Beta
-(Note: I'm testing a separate CMD Shell for NO_ONX and will probably be fully functional in a future version)
+(Note: I'm testing a separate CMD Shell for NO_ONX and will probably be fully functional in a future version, in this time you can use CMD Shell experimental version via NO_ONX for Window)
 
 - NO_ONX: No information
 - NO_ONX::modify : No information
