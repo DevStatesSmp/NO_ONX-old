@@ -1,4 +1,4 @@
-from file_info_module import info, check_permission, hidden_file_info
+from src.workload.file_info_module import info, check_permission, hidden_file_info
 
 def info_commands():
     print("📌 Available operations in file_info.py:\n")

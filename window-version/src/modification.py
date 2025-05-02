@@ -12,7 +12,7 @@ class mod:
                 if os.name == 'nt':
                     print("⚠️ File permission change is not fully supported on Windows.")
                     return
-                os.chmod(path, int(permission, 8))
+                os.chmod(path, int(permission, 8))  # Unix-based systems
                 print(f"Permission of '{path}' changed to {permission}")
             except Exception as e:
                 print(f"Error modifying permission: {e}")
@@ -22,7 +22,7 @@ class mod:
             try:
                 with open(path, 'r+', encoding='utf-8') as file:
                     content = file.readlines()
-                    
+
                     if operation == 'append':
                         file.seek(0, os.SEEK_END)
                         file.write(text + "\n")
@@ -55,6 +55,10 @@ class mod:
         @staticmethod
         def modify_file_metadata(path, metadata_type, value):
             try:
+                if os.name == 'nt':
+                    print("⚠️ File metadata modification is limited on Windows.")
+                    return
+
                 if metadata_type == 'owner':
                     print("⚠️ Changing file owner is not supported on Windows.")
                 elif metadata_type == 'last_modified':
@@ -70,7 +74,7 @@ class mod:
             try:
                 with open(path, 'r+', encoding='utf-8') as file:
                     lines = file.readlines()
-                    
+
                     if operation == 'replace' and new_line:
                         lines[line_number - 1] = new_line + "\n"
                     elif operation == 'delete':
@@ -80,7 +84,7 @@ class mod:
                     else:
                         print("Invalid operation.")
                         return
-                    
+
                     file.seek(0)
                     file.truncate()
                     file.writelines(lines)
@@ -91,9 +95,14 @@ class mod:
         @staticmethod
         def modify_file_symlink(target_path, symlink_path, operation):
             try:
+                if os.name == 'nt':
+                    print("⚠️ Symlink creation requires admin rights or developer mode on Windows.")
+                    return
+
                 if operation == 'create':
-                    if os.name == 'nt' and not os.path.exists(target_path):
-                        print("⚠️ Windows requires admin rights or developer mode for symlink creation.")
+                    if not os.path.exists(target_path):
+                        print("⚠️ Target path does not exist.")
+                        return
                     os.symlink(target_path, symlink_path)
                     print(f"Symlink created from {target_path} to {symlink_path}")
                 elif operation == 'delete' and os.path.islink(symlink_path):
@@ -124,7 +133,7 @@ class mod:
                 if os.name == 'nt':
                     print("⚠️ Directory permission changes are limited on Windows.")
                     return
-                os.chmod(path, int(permission, 8))
+                os.chmod(path, int(permission, 8))  # Unix-based systems
                 print(f"Permissions of directory '{path}' changed to {permission}")
             except Exception as e:
                 print(f"Error modifying directory permissions: {e}")
@@ -132,6 +141,10 @@ class mod:
         @staticmethod
         def modify_file_owner(path, new_owner):
             try:
-                print("⚠️ File owner modification is not supported on Windows.")
+                if os.name == 'nt':
+                    print("⚠️ File owner modification is not supported on Windows.")
+                    return
+                # This functionality is generally not supported on Windows unless using Windows Subsystem for Linux (WSL)
+                print("File owner modification is typically not supported on Windows.")
             except Exception as e:
                 print(f"Error modifying file owner: {e}")

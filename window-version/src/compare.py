@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 from tabulate import tabulate
-from compare_module import (deep_compare_dirs, deep_compare_files, 
+from src.workload.compare_module import (deep_compare_dirs, deep_compare_files, 
                             simple_compare_files, simple_compare_dirs)
 
 def main():
