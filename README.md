@@ -1,3 +1,5 @@
+> :window: Since **v0.2.4 Beta**, NO_ONX officially supports **Windows only**. Linux support has been **discontinued**, go to this [link](https://github.com/DevStatesSmp/NO_ONX)
+
 ![have background](https://github.com/user-attachments/assets/0deb4708-e3a9-4219-85e4-3072af962c90)
 (This is invincible title card, btw for fun)<br>
 
